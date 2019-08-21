@@ -1,0 +1,1118 @@
+metadata:
+  title: DebtSettle Letter
+  short title: DebtSettle Letter
+  description: |
+    This is the debt letter.
+  authors:
+    - name: Ethan Mackay
+      organization: Juris, PBC
+  revision_date: 2019-08-01
+---
+mandatory: True
+code: |
+  juris = {}
+  juris['all_done'] = False
+---
+id: how_contacted
+question: |
+  ## What's the problem you're facing?
+  
+  We'll let you know if and how DebtSettle can help.
+fields:
+  - Choose One: user_problem
+    required: True
+    input type: radio
+    choices:
+      - "I was contacted about a debt I don't owe."
+      - "I was contacted about a debt I don't recognize."
+      - "I noticed a debt in collections on my credit report that I don't recognize."
+      - "A debt collector is calling me at odd hours."
+      - "A debt collector is calling me at work."
+      - "A debt collector is using predatory tactics against me."
+      - "I have some other problem."
+---
+mandatory: True
+code: |
+  need(user_problem)
+  
+  if (user_problem == "I have some other problem."): other_problem
+---
+id: special_help_screen
+question: |
+  ## Contact Us
+subquestion: |
+  Unfortunately, it sounds like DebtSettle can't help you right now, but maybe our team can still help. 
+  
+  Contact us by using the chat system in the bottom 
+  right corner of this screen, by calling us at 347-455-8747, or by emailing the team at [team@getjuris.com](mailto:team@getjuris.com), 
+  and we'll see what we can do. We're always adding new features so we can help 
+  more people.
+event: other_problem
+sets: all_done
+---
+id: dont_owe_screen
+field: dont_owe_debt
+question: |
+  ## DebtSettle can help!
+subquestion: |
+  If you don't owe the alleged debt, federal law gives you the right to 
+  send a letter to the debt collector stating that you dispute the debt.
+  
+  Usually, the result will be that the debt collector is prohibited
+  from trying to collect, until they either (1) give you written proof 
+  that you owe the debt or (2) get a court judgment saying you have to pay. 
+  
+  It's also common for debt collectors to give up on collecting when a debt 
+  is disputed in writing. They'd rather go after people that don't assert 
+  their rights.
+choices:
+  - "Next"
+---
+mandatory: |
+  user_problem == "I was contacted about a debt I don't owe."
+code: |
+  need(dont_owe_debt)
+---
+id: dont_recognize_screen
+field: dont_recognize_debt
+question: |
+  ## DebtSettle can help!
+subquestion: |
+  If you don't recognize this alleged debt, federal law gives you the right 
+  to send a letter to the debt collector demanding certain information. You 
+  can also use this letter to request more information.
+  
+  The result will often be that the debt collector is prohibited
+  from trying to collect, until they either (1) give you the legally required 
+  information or (2) get a court judgment saying you have to pay. 
+
+  It's also possible the debt collector will give up on collecting when this 
+  information is demanded in writing. They'd rather go after people that 
+  don't assert their rights.
+choices:
+  - "Next"
+---
+mandatory: |
+  user_problem == "I was contacted about a debt I don't recognize."
+code: |
+  need(dont_recognize_debt)
+---
+id: collector_odd_hours_screen
+field: collector_calling_odd_hours
+question: |
+  ## DebtSettle can help!
+subquestion: |
+  If the debt collector is calling you at odd hours, federal law gives you 
+  the right to send a letter to the debt collector demanding that they 
+  only call at convenient times.
+
+  Usually, they will be legally required to stop calling at inconvenient times. They will 
+  also realize that you know your rights. 
+  
+  It's also possible the debt collector will give up on collecting when this 
+  demand is made in writing. They'd rather go after people that don't know 
+  their rights.
+choices:
+  - "Next"
+---
+mandatory: |
+  user_problem == "A debt collector is calling me at odd hours."
+code: |
+  need(collector_calling_odd_hours)
+---
+id: collector_calling_work_screen
+field: collector_calling_work
+question: |
+  ## DebtSettle can help!
+subquestion: |
+  If the debt collector is calling you at work, and your employer prohibits those 
+  kinds of calls, federal law gives you the right to send a letter 
+  to the debt collector demanding that they stop calling you at work.
+
+  Usually, they will be legally required to stop calling you at work. They will 
+  also realize that you know your rights.
+  
+  It's also possible they will give up on collecting when this 
+  demand is made in writing. They'd rather go after people that don't know 
+  their rights.
+choices:
+  - "Next"
+---
+mandatory: |
+  user_problem == "A debt collector is calling me at work."
+code: |
+  need(collector_calling_work)
+---
+id: predatory_tactics_screen
+field: predatory_tactics
+question: |
+  ## DebtSettle can help!
+subquestion: |
+  If the debt collector is using predatory tactics against you, they are 
+  violating federal law. You can send them a letter notifying them that you 
+  are willing to consider suing them if they violate your rights.
+  
+  It's possible this will cause the debt collector to give up on collecting. 
+  They'd rather go after people that don't know their rights.
+choices:
+  - "Next"
+---
+mandatory: |
+  user_problem == "A debt collector is using predatory tactics with me."
+code: |
+  need(predatory_tactics)
+---
+id: report_dont_recognize_screen
+field: report_dont_recognize
+question: |
+  ## DebtSettle can help!
+subquestion: |
+  If you don't recognize an alleged debt on your credit report, federal law 
+  gives you the right to send a letter to the debt collector demanding 
+  certain information. You can also use this letter to request more information.
+  
+  The result will often be that the debt collector is prohibited
+  from trying to collect, until they either (1) give you the legally required 
+  information or (2) get a court judgment saying you have to pay. 
+
+  It's also possible the debt collector will give up on collecting when this 
+  information is demanded in writing. They'd rather go after people that 
+  don't assert their rights.
+choices:
+  - "Next"
+---
+mandatory: |
+  user_problem == "I noticed a debt in collections on my credit report that I don't recognize."
+code: |
+  need(report_dont_recognize)
+---
+id: how_it_works_screen
+field: how_it_works
+question: |
+  ## How DebtSettle Works
+subquestion: |  
+  1. You answer some quick questions and DebtSettle will automatically draft a 
+  unique letter that asserts your rights.
+  
+  2. You read and approve the letter.
+  
+  3. You sit back as we automatically print it, package it, and mail it, then 
+  send you tracking updates on its progress.
+  
+  4. You log onto your Juris account so you can see your letter at any time, 
+  log new contacts with the debt collector, and get our help with next steps.
+  
+  For this service, we charge a one-time, flat fee of $9. And if you're 
+  unhappy with the results, you can rely on our [30-Day Money Back Guarantee](http://getjuris.com/terms-print/#guarantee). 
+choices:
+  - "Get Started!"
+---
+mandatory: True
+code: |
+  need(how_it_works)
+---
+id: disclaimer
+field: accept_disclaimer
+question: |
+  ## Disclaimer
+subquestion: |
+  You should understand that Juris is not a 
+  law firm or a substitute for the advice of an attorney.
+  
+  Juris provides a self-help service with general information 
+  and assistance only.  Juris cannot and does not provide legal advice. 
+  What you will write to the debt collector is entirely up to you.
+  
+  By using this service, you understand and agree to the above, 
+  as well as our [Terms of Service](http://getjuris.com/terms).
+buttons:
+  - Accept
+  - "Don't Accept"
+---
+mandatory: True
+code: |
+  need(accept_disclaimer)
+  
+  if (accept_disclaimer == "Don't Accept"): disclaimer_rejected
+---
+id: disclaimer_refused
+question: |
+  ## Oops :(
+subquestion: |
+  You must accept the disclaimer in order to use DebtSettle. Go back to accept.
+event: disclaimer_rejected
+sets: all_done
+---
+id: back_button_screen
+field: back_button_warning
+question: |
+  ## Warning
+subquestion: |
+  During this process, don't click the Back button in your browser above, or 
+  you'll lose your progress. 
+  
+  If you want to go back, use the gray back buttons like the one below.
+choices:
+  - "Got it"
+---
+mandatory: True
+code: |
+  need(back_button_warning)
+---
+id: client_email_phone
+question: |
+  ## We need your name and email so we can save your progress
+fields:
+  - First Name: user_firstname
+    required: True
+  - Last Name: user_lastname
+    required: True
+  - Email Address: user_email
+    required: True
+    datatype: email
+---
+mandatory: True
+code: |
+  need(user_email)
+---
+id: how_contacted
+question: |
+  ## Thanks ${user_firstname}!
+  
+  So, how'd you first learn about this alleged debt? 
+fields:
+  - Choose One: first_contact_method
+    required: True
+    input type: radio
+    choices:
+      - Someone called me saying I owe them money : "Your company contacted me by phone in connection with this debt"
+      - I got a letter saying I owe someone money : "I received your contact by mail in connection with this debt"
+      - I got an email saying I owe someone money : "I received your contact by email in connection with this debt"
+      - I noticed the debt on my credit report : "I noticed this debt on my credit report"
+      - Someone contacted me in person saying I owe them money : "Your company contacted me in person in connection with this debt"
+---
+mandatory: True
+code: |
+  need(first_contact_method)
+  
+  check_for_date = ""
+  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+    check_for_date = "Since they first contacted you by phone, you could go through your call history to figure out this date."
+  if(first_contact_method) == "I received your contact by email in connection with this debt":
+    check_for_date = "Since they first contacted you by email, you could go through your email history to figure out this date."
+  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+    check_for_date = "Since they first contacted you by mail, you could check their letter to figure out this date."
+  
+  check_for_address = ""
+  if(first_contact_method) == "I received your contact by email in connection with this debt":
+    check_for_address = "Check the email that they sent you to see if they included an address."
+  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+    check_for_address = "Check the mail that they sent you to get their address."
+  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+    check_for_address = "If they contacted you by mail at all, look for an address on their letter."
+  if(first_contact_method) == "I noticed this debt on my credit report":
+    check_for_address = "Check your credit report to see if it lists a mailing address for the debt collector in the details about the alleged debt."
+  if(first_contact_method) == "Your company contacted me in person in connection with this debt":
+    check_for_address = "If they contacted you by mail at all, look for an address on their letter."
+
+  check_for_name = ""
+  if(first_contact_method) == "I received your contact by email in connection with this debt":
+    check_for_name = "Check the email that they sent you to get the name of their organization."
+  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+    check_for_name = "Check the mail that they sent you to get the name of their organization."
+  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+    check_for_name = "If they contacted you by mail at all, look for the name of their organization on their letter."
+  if(first_contact_method) == "I noticed this debt on my credit report":
+    check_for_name = "Check your credit report to see if it lists the name of the debt collector in the details about the alleged debt."
+  if(first_contact_method) == "Your company contacted me in person in connection with this debt":
+    check_for_name = "If they contacted you by mail at all, look for the name of their organization on their letter."
+
+  simple_contact_description = ""
+  
+  if(first_contact_method) == "I noticed this debt on my credit report":
+    simple_contact_description = "that is on your credit report as a debt holder"
+    
+  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+    simple_contact_description = "that sent you a letter"
+
+  if(first_contact_method) == "I received your contact by email in connection with this debt":
+    simple_contact_description = "that sent you an email"
+
+  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+    simple_contact_description = "that called you"
+
+  if(first_contact_method) == "Your company contacted me in person in connection with this debt":
+    simple_contact_description = "that contacted you in person"
+---
+id: which_bureau_was_it
+question: |
+  ## Which credit bureau did this credit report come from?
+field: which_bureau
+choices:
+  - Experian : "This credit report was from Experian."
+  - Equifax : "This credit report was from Equifax."
+  - TransUnion : "This credit report was from TransUnion."
+---
+mandatory: |
+  first_contact_method == "I noticed this debt on my credit report"
+code: |
+  need(which_bureau)
+---
+id: know_collector_screen
+question: |
+  ## Do you know the name of the organization ${simple_contact_description}?
+field: know_collector_name
+buttons:
+  - "Yes"
+  - "No"
+---
+mandatory: True
+code: |
+  need(know_collector_name)
+
+  if (know_collector_name == "No"): no_collector_name
+---
+id: dispute_end
+question: |
+  ## Finding out the debt collector's name
+subquestion: |
+  You'll need the name of the debt collector in order to send a letter to them. 
+  ${check_for_name} If that doesn't work, contact them directly to ask for 
+  the name of their organization. You can use this opportunity to ask 
+  for their mailing address, which you'll also need to send the letter.
+  
+  If you choose to contact them, be careful not to give them more information 
+  about you. Just get the name and/or address, then end the conversation.
+event: no_collector_name
+sets: all_done
+---
+id: collector_name
+question: |
+  ## What's the name of the organization ${simple_contact_description}?
+fields:
+  - Debt Collector Name: debt_collector_name
+    required: True
+---
+mandatory: |
+  know_collector_name == "Yes"
+code: |
+  need(debt_collector_name)
+---
+id: claimant
+field: who_is_claimant
+question: |
+  ## Did you ever borrow money from ${debt_collector_name} or use their services?
+subquestion: |
+buttons:
+  - "Yes"
+  - "No"
+---
+mandatory: True
+code: |
+  need(who_is_claimant)
+  
+  if (who_is_claimant == "Yes"): original_creditor_fail
+---
+id: creditor_end
+question: |
+  ## Contact Us
+subquestion: |
+  Unfortunately, it sounds like DebtSettle can't help you right now. It isn't 
+  built for situations involving the original creditor, only debt collectors. But 
+  our team might be able to help.
+  
+  Contact us by using the chat system in the bottom 
+  right corner of this screen, by calling us toll free at 1-888-880-8095, or by emailing the team at [team@getjuris.com](mailto:team@getjuris.com), 
+  and we'll see what we can do. We're always adding new features so we can help 
+  more people.
+event: original_creditor_fail
+sets: all_done
+---
+mandatory: True
+code: |
+  lawyer_language = ""
+  dispute_language = ""
+  info_demand_language = ""
+  employer_contact_language = ""
+  contact_language = ""
+  more_information_language = ""
+  violation_language = ""
+---
+id: have_a_lawyer
+question: |
+  ## Do you have a lawyer who is handling this matter?
+subquestion: |
+field: user_has_lawyer
+buttons:
+  - Yes
+  - No
+---
+id: lawyer_contact
+question: |
+  ## Want to tell ${debt_collector_name} to contact your lawyer and no one else regarding this matter?
+subquestion: |
+  Under federal law, debt collectors are usually prohibited from contacting 
+  an individual to collect a debt if they know that individual has a lawyer
+  handling the matter. 
+  
+  *This right comes from the Fair Debt Collection Practices Act, 15 U.S. Code § 1692c(a)(2).*
+field: use_the_lawyer
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+id: lawyer_contact_info
+question: |
+  ## What's your lawyer's contact information?
+fields:
+  - Lawyer Name: lawyer_name
+    required: True
+  - Address Line 1: lawyer_address1
+    required: True
+  - Address Line 2: lawyer_address2
+    required: False
+  - City: lawyer_city
+    required: True
+  - State: lawyer_state
+    required: True
+    code: |
+      states_list()
+  - Zip: lawyer_zip
+    required: True
+  - Email: lawyer_email
+    datatype: email
+    required: False
+  - Phone: lawyer_phone
+    datatype: tel
+    required: False
+---
+mandatory: True
+code: |
+  lawyer_language = ""
+  if (user_has_lawyer == "Yes" and use_the_lawyer == "Add this to my letter") :
+    lawyer_address = "%s [BR] %s" % (lawyer_name, lawyer_address1)
+    
+    if (defined('lawyer_address2')  and value('lawyer_address2') != ""):
+      lawyer_address += "[BR] %s" % (lawyer_address2)
+    
+    lawyer_address += "[BR] %s, %s %s" % (lawyer_city, lawyer_state, lawyer_zip)
+    
+    if (defined('lawyer_email') and value('lawyer_email') != ""):
+      lawyer_address += "[BR] %s" % (lawyer_email)
+    
+    if (defined('lawyer_phone') and value('lawyer_phone') != ""):
+      lawyer_address += "[BR] %s" % (lawyer_phone)
+    
+    lawyer_language = """
+    I have an attorney representing me in this matter and do not want you
+    to contact me or anyone other than my attorney. My attorney's 
+    name is %s. As I'm sure you are aware, under the Fair 
+    Debt Collection Practices Act, 15 U.S. Code § 1692, 
+    you must abide by my request or else risk violating federal law.
+    
+    My lawyer’s contact information is:
+      
+  %s  
+    """ % (lawyer_name, lawyer_address)
+---
+id: what_debt_info
+question: |
+  ## Did ${debt_collector_name} send you a letter with both the amount of the debt and the name of the company you owe it to?
+field: debt_info_given
+buttons:
+  - Yes
+  - No
+---
+mandatory: |
+  user_has_lawyer == "No" or use_the_lawyer == "No"
+code: |
+  need(debt_info_given)
+---
+id: info_demand
+question: |
+  ## Want to demand that ${debt_collector_name} send you a letter with the amount of the debt and the name of the company you owe it to?
+subquestion: |
+  Under federal law, debt collectors are usually prohibited from attempting
+  to collect money until they have given you this information when you ask
+  for it.
+  
+  *This right comes from the Fair Debt Collection Practices Act, 15 U.S. Code §§ 1692g(a) and 1692g(b).*
+field: debt_info_requested
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+mandatory: |
+  (user_has_lawyer == "No" or use_the_lawyer == "Leave this out") and debt_info_given == "No"
+code: |
+  info_demand_language = ""
+  if (debt_info_requested == "Add this to my letter") :
+    info_demand_language = """
+    I am notifying you that I have not received a written notice containing 
+    the amount of the debt as well as the name of the creditor 
+    to whom the debt is owed. Under the Fair 
+    Debt Collection Practices Act, 15 U.S. Code § 1692, you are required 
+    to send me a written notice with this information. Please send me 
+    this information, as well as the name and address of the  
+    creditor to whom the debt is owed as soon as possible. In the meantime, be advised that you 
+    are obligated by law to cease collection of this debt 
+    until you send me this information.
+    """
+---
+id: dispute_decisions
+question: |
+  ## Now you'll decide whether to dispute the debt.
+fields: 
+  - Do any of the below phrases describe your situation? : dispute_reason
+    required: True
+    input type: radio
+    choices:
+      - "I don't owe any of this money"
+      - "I recognize the debt but the amount isn't right" : "the amount isn't right"
+      - "There is some other serious problem with this alleged debt"
+      - "None of these phrases describe my situation"
+---
+mandatory: |
+  user_has_lawyer == "No" or use_the_lawyer == "Leave this out"
+code: |
+  need(dispute_reason)
+  
+  simple_dispute_explanation = ""
+  if(dispute_reason) == "I don't owe any of this money":
+    simple_dispute_explanation = "you don't owe this money"
+
+  if(dispute_reason) == "the amount isn't right":
+    simple_dispute_explanation = "you don't owe all of this alleged debt"
+
+  if (dispute_reason == "There is some other serious problem with this alleged debt"): complex_dispute_fail
+---
+id: dispute_end
+question: |
+  ## Contact Us
+subquestion: |
+  If there's some other serious issue, DebtSettle might not be the best answer
+  for you. We don't want you to use it unless it will be effective. But we would 
+  still like to try to help.
+  
+  Contact us by using the chat system in the bottom 
+  right corner of this screen, by calling us toll free at 1-888-880-8095, or by emailing the team at [team@getjuris.com](mailto:team@getjuris.com), 
+  and we'll see what we can do. We're always adding new features so we can help 
+  more people.
+event: complex_dispute_fail
+sets: all_done
+---
+id: why_debt_is_wrong
+question: |
+  ## Want to tell ${debt_collector_name} that you are disputing this alleged debt?
+subquestion: |
+  Since ${simple_dispute_explanation}, you can tell ${debt_collector_name} 
+  that you are disputing the debt. Under federal law, a collector is 
+  usually prohibited from attempting to collect on a disputed debt until 
+  they provide the consumer with verification of the debt or a court judgment.
+  
+  *This right comes from the Fair Debt Collection Practices Act, 15 U.S. Code § 1692g(b).*
+field: wants_to_dispute_debt
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+mandatory: |
+  (user_has_lawyer == "No" or use_the_lawyer == "Leave this out") and (dispute_reason == "I don't owe any of this money" or dispute_reason == "the amount isn't right")
+code: |
+  dispute_language = ""
+  if (wants_to_dispute_debt == "Add this to my letter") :
+    dispute_language = """
+    I am disputing this debt because %s. Consequently, under the Fair Debt 
+    Collection Practices Act, 15 U.S. Code § 1692, you are required to 
+    cease any collection of this debt until you send me verification 
+    or else you risk violating federal law.
+
+    If you have good reason to believe that I am responsible for this debt, 
+    mail me the documents that make you believe that. Record that I dispute 
+    having any obligation for this debt. If you stop your collection of 
+    this debt, and forward or return it to another company, please 
+    indicate to them that it is disputed. If you report it to a credit 
+    bureau (or have already done so), also report that the debt is disputed.
+    """ % (dispute_reason)
+---
+id: employment_contact
+question: |
+  ## Want to tell ${debt_collector_name} that your employer doesn't allow you to be contacted at work about this alleged debt?
+subquestion: |
+  Under federal law, debt collectors are usually prohibited from contacting
+  people at work if they've been told that the employer prohibits that kind of
+  contact.
+  
+  *This right comes from the Fair Debt Collection Practices Act, 15 U.S. Code § 1692c(a)(3).*
+field: add_employer_language
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+mandatory: |
+  user_has_lawyer == "No" or use_the_lawyer == "Leave this out"
+code: |
+  employer_contact_language = ""
+  if (add_employer_language == "Add this to my letter") :
+    employer_contact_language = """
+    Be advised that my employer prohibits me from receiving communications
+    regarding this matter at work. Consequently, under the Fair Debt Collection
+    Practices Act, 15 U.S. Code § 1692c(a)(3), you are prohibited from 
+    contacting me at work.
+    """
+---
+id: contact_language
+question: |
+  ## Want to tell ${debt_collector_name} that they can only contact you at convenient times?
+subquestion: |
+  Under federal law, debt collectors are usually prohibited from contacting
+  people at inconvenient times. You can use this letter to notify them of that.
+  
+  *This right comes from the Fair Debt Collection Practices Act, 15 U.S. Code § 1692c(a)(1).*
+field: add_contact_language
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+mandatory: |
+  user_has_lawyer == "No" or use_the_lawyer == "Leave this out"
+code: |
+  contact_language = ""
+  if (add_contact_language == "Add this to my letter") :
+    contact_language = """
+    Be advised that under the Fair Debt Collection Practices Act, 15 
+    U.S. Code § 1692c(a)(1), you may not contact me at any unusual time
+    or place or a time or place known or which you should know to be 
+    inconvenient to me.
+    """
+---
+id: more_info_request
+question: |
+  ## Want to ask ${debt_collector_name} for more information on the alleged debt?
+subquestion: |
+  You can use this letter to ask the collector for more information 
+  regarding the debt. Collectors aren't legally required to do this but they
+  might be willing to. 
+field: add_information_language
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+mandatory: |
+  user_has_lawyer == "No" or use_the_lawyer == "Leave this out"
+code: |
+  more_information_language = ""
+  if (add_information_language == "Add this to my letter") :
+    more_information_language = """
+    In addition to the above, I also request the following information 
+    in writing, so that I can be fully informed regarding this matter:
+      
+      
+    Why you think I owe the debt and to whom I owe it, including:
+      
+    * The name and address of the creditor to whom the debt is currently owed, 
+    the account number used by that creditor, and the amount owed.
+    * If this debt started with a different creditor, provide the 
+    name and address of the original creditor, the account number 
+    used by that creditor, and the amount owed to that creditor at 
+    the time it was transferred. When you identify the original creditor, 
+    please provide any other name by which I might know them, if that 
+    is different from the official name. In addition, tell me when the 
+    current creditor obtained the debt and who the current creditor 
+    obtained it from.
+    * Provide verification and documentation that there is a valid basis
+    for claiming that I am required to pay the debt to the current creditor. 
+    For example, can you provide a copy of the written agreement that 
+    created my original requirement to pay?
+    * If you are asking that I pay a debt that somebody else is or 
+    was required to pay, identify that person. Provide verification 
+    and documentation about why this is a debt that I am required to pay.
+    
+    
+    The amount and age of the debt, including:
+      
+    * A copy of the last billing statement sent to me by the original creditor.
+    * State the amount of the debt when you obtained it, and the date that you obtained it.
+    * If there have been any additional interest, fees or charges 
+    added since the last billing statement from the original creditor, 
+    provide an itemization showing the dates and amount of each added 
+    amount. In addition, explain how the added interest, fees or other 
+    charges are expressly authorized by the agreement creating the debt 
+    or are permitted by law.
+    * If there have been any payments or other reductions since the 
+    last billing statement from the original creditor, provide an 
+    itemization showing the dates and amount of each of them.
+    * If there have been any other changes or adjustments since the 
+    last billing statement from the original creditor, please provide 
+    full verification and documentation of the amount you are trying 
+    to collect. Explain how that amount was calculated. In addition, 
+    explain how the other changes or adjustments are expressly authorized 
+    by the agreement creating the debt or permitted by law.
+    * State when the creditor claims this debt became due and when 
+    it became delinquent.
+    * Identify the date of the last payment made on this account.
+    * Have you made a determination that this debt is within the 
+    statute of limitations applicable to it? State when you think 
+    the statute of limitations expires for this debt, and how you 
+    made that determination.
+    
+    
+    Details about your authority to collect this debt:
+    
+    * I would like more information about your firm before I discuss
+    the debt with you. Does your firm have a debt collection license
+    from my state? If not, explain why not. If so, provide the date of the
+    license, the name on the license, the license number, and the name,
+    address and telephone number of the state agency issuing the license.
+    * If you are contacting me from a place outside my state, does your
+    firm have a debt collection license from that place? If so, provide
+    the date of the license, the name on the license, the license number,
+    and the name, address and telephone number of the state agency issuing
+    the license.
+    
+    
+    I have asked for this information because I have some questions. I must hear from you to make an informed decision about your claim
+    that I owe this money. I am open to communicating with you for this
+    purpose. In order to make sure that I am not put at any disadvantage,
+    in the meantime please treat this debt as being in dispute and under
+    discussion between us.
+    """
+---
+id: violation_screen
+question: |
+  ## Want to warn ${debt_collector_name} that you will consider legal action if necessary?
+subquestion: |
+  You can use this letter to tell ${debt_collector_name} that you know your 
+  rights and will consider legal action if they violate any laws 
+  in this process.
+  
+  *These rights come from the FDCPA, Dodd-Frank, the FCRA, and the TCPA, as well as state and local laws.*
+field: add_violation_language
+buttons:
+  - "Add this to my letter"
+  - "Leave this out"
+---
+mandatory: |
+  user_has_lawyer == "No" or use_the_lawyer == "Leave this out"
+code: |
+  violation_language = ""
+  if (add_violation_language == "Add this to my letter") :
+    violation_language = """
+    Be aware that I am familiar with debt collection laws, including
+    the FDCPA, Dodd-Frank, the FCRA, and the TCPA, as well as state and local
+    laws. If any of these laws should be violated in the course of this matter, 
+    I will consider legal action.
+    """
+---
+id: user_contact_info
+question: |
+  # Your letter is almost ready!
+subquestion: |
+  Just a few more details.
+  
+  What's your mailing address? Only give an address you're okay with showing to the debt collector.
+fields:
+  - Address Line 1: user_address_line1
+    required: True
+  - Address Line 2: user_address_line2
+    required: False
+  - City: user_address_city
+    required: True
+  - State: user_address_state
+    required: True
+    code: |
+      states_list()
+  - Zip Code: user_address_zip
+    required: True
+---
+mandatory: True
+code: |
+  need(user_address_line1)
+---
+id: know_collector_address_screen
+question: |
+  ## Do you know ${debt_collector_name}'s mailing address?
+field: know_collector_address
+buttons:
+  - Yes
+  - No
+---
+mandatory: True
+code: |
+  need(know_collector_address)
+
+  if (know_collector_address == "No"): no_collector_address
+---
+id: dispute_end
+question: |
+  ## Finding ${debt_collector_name}'s address
+subquestion: |
+  You'll need ${debt_collector_name}'s address to send them a letter. 
+  ${check_for_address} If that doesn't work, you can try looking ${debt_collector_name} up 
+  on the internet to find a mailing address. 
+  
+  You could also contact ${debt_collector_name}, 
+  tell them that you are sending them a letter, and ask for a mailing address. If 
+  you choose to contact them, be careful not to give them more information. Just ask for the 
+  address and end the conversation after you get it.
+event: no_collector_address
+sets: all_done
+---
+id: collector_contact_info
+question: |
+  ## What is ${debt_collector_name}'s mailing address?
+fields:
+  - Address Line 1: collector_address_line1
+    required: True
+  - Address Line 2: collector_address_line2
+    required: False
+  - City: collector_address_city
+    required: True
+  - State: collector_address_state
+    required: True
+    code: |
+      states_list()
+  - Zip Code: collector_address_zip
+    required: True
+---
+mandatory: True
+code: |
+  need(collector_address_line1)
+---
+id: know_first_contact_screen
+question: |
+  ## Do you know when ${debt_collector_name} first contacted you?
+subquestion: |
+  This can just be your best guess but the exact day would be better. ${check_for_date}
+field: know_first_contact
+buttons:
+  - Yes
+  - No
+---
+mandatory: True
+code: |
+  need(know_first_contact)
+---
+id: first_contact
+question: |
+  ## When did ${debt_collector_name} first contact you?
+fields:
+  - "Date of contact" : first_contact_date
+    datatype: date
+    required: True
+---
+mandatory: |
+  know_first_contact == "Yes"
+code: |
+  need(first_contact_date)
+---
+id: know_original_lender_screen
+question: |
+  ## Last question! Did ${debt_collector_name} tell you who they think you originally owed this money to?
+field: know_original_lender
+buttons:
+  - Yes
+  - No
+---
+mandatory: True
+code: |
+  need(know_original_lender)
+---
+id: original_lender_name_screen
+question: |
+  ## Who does ${debt_collector_name} claim you originally owed the money to?
+fields:
+  - "Original Lender Name" : original_lender_name
+    required: True
+---
+mandatory: |
+  know_original_lender == "Yes"
+code: |
+  need(original_lender_name)
+---
+id: know_original_account_screen
+question: |
+  ## Did ${debt_collector_name} give you an account number to identify this debt?
+field: have_account_number
+buttons:
+  - Yes
+  - No
+---
+mandatory: True
+code: |
+  need(have_account_number)
+---
+id: original_account_screen
+question: |
+  ## What is the account number ${debt_collector_name} gave you?
+fields:
+  - "Account Number" : account_number
+    required: True
+---
+mandatory: |
+  have_account_number == "Yes"
+code: |
+  need(account_number)
+---
+mandatory: True
+code: |
+  user_address = "%s %s [BR] %s" % (user_firstname, user_lastname, user_address_line1) 
+  if (defined('user_address_line2') and value('user_address_line2') != ""):
+    user_address += "[BR] %s" % (user_address_line2)
+  user_address += "[BR] %s, %s %s" % (user_address_city, user_address_state, user_address_zip)
+  
+  collector_address = "%s [BR] %s" % (debt_collector_name, collector_address_line1)
+  if (defined('collector_address_line2') and value('collector_address_line2') != ""):
+    collector_address += "[BR] %s" % (collector_address_line2)
+  collector_address += "[BR] %s, %s %s" % (collector_address_city, collector_address_state, collector_address_zip)
+
+  regarding_final_text = "Re: Debt Collection"
+  if (defined('original_lender_name') and value('original_lender_name') != ""):
+    regarding_final_text += ", Original Creditor: %s" % (original_lender_name) 
+  if (defined('account_number') and value('account_number') != ""):
+    regarding_final_text += ", Account Number: %s" % (account_number)
+
+  when_contacted_text = "I am responding to your contact about a debt you are trying to collect. %s." % (first_contact_method)
+  if (defined('first_contact_date') and value('first_contact_date') != ""):
+    when_contacted_text += " This occured on %s." %(first_contact_date)
+  if (defined('which_bureau') and value('which_bureau') != ""):
+    when_contacted_text += " %s" % (which_bureau)
+---
+id: 49216
+code: |
+    letter_text = ""
+    letter_text = """
+    %s
+      
+      
+    %s
+      
+      
+    %s
+      
+      
+    %s
+      
+      
+    %s
+      
+      
+    %s
+      
+      
+    %s
+    
+    
+    %s
+    
+    
+    %s
+    
+    
+    %s
+    
+    
+    %s
+    
+    %s
+      
+      
+    Thank you for your cooperation.
+      
+      
+    Sincerely,
+      
+      
+    %s %s
+    """ % (user_address, today(), collector_address, regarding_final_text, when_contacted_text, lawyer_language, dispute_language, info_demand_language, employer_contact_language, contact_language, violation_language, more_information_language, user_firstname, user_lastname)
+---
+mandatory: true
+code: |
+  import copy
+  
+  juris['toAddress'] = {}
+  juris['toAddress']['name'] = copy.deepcopy(debt_collector_name)
+  juris['toAddress']['address_line1'] = copy.deepcopy(collector_address_line1)
+  
+  if ( defined('collector_address_line2') ):
+    juris['toAddress']['address_line2'] = copy.deepcopy(collector_address_line2)  
+  
+  juris['toAddress']['address_city'] = copy.deepcopy(collector_address_city)
+  juris['toAddress']['address_state'] = copy.deepcopy(collector_address_state)
+  juris['toAddress']['address_zip'] = copy.deepcopy(collector_address_zip)
+  
+  juris['fromAddress'] = {}
+  juris['fromAddress']['name'] = copy.deepcopy(user_firstname)
+  juris['fromAddress']['address_line1'] = copy.deepcopy(user_address_line1)
+  
+  if ( defined('user_address_line2') ):
+    juris['fromAddress']['address_line2'] = copy.deepcopy(user_address_line2)
+    
+  juris['fromAddress']['address_city'] = copy.deepcopy(user_address_city)
+  juris['fromAddress']['address_state'] = copy.deepcopy(user_address_state)
+  juris['fromAddress']['address_zip'] = copy.deepcopy(user_address_zip)
+
+  juris['client'] = {}
+  juris['client']['firstname'] = copy.deepcopy(user_firstname)
+  juris['client']['lastname'] = copy.deepcopy(user_lastname)
+  juris['client']['email'] = copy.deepcopy(user_email)
+  
+  if ( defined('user_phone') ) :
+    juris['client']['phone'] = copy.deepcopy(user_phone)
+  
+  juris['content'] = letter_text
+  juris['all_done'] = True
+---
+mandatory: True
+code: |
+  import copy
+  juris['reminders'] = []
+  
+  reminder1 = {}
+  reminder1['subject'] = '[JURIS] Have you gotten a response yet?'
+  reminder1['template'] = 'juris-reminder-yes-no'
+  reminder1['days'] = 40
+  
+  mergeVars1 = {}
+  mergeVars1['CLIENTNAME'] = copy.deepcopy(user_firstname)
+  mergeVars1['YESTEXT'] = "Yes, I received a response."
+  mergeVars1['YESURL'] = "https://debtsettle.co"
+  mergeVars1['NOTEXT'] = "No, I did not receive a response."
+  mergeVars1['NOURL'] = "https://debtsettle.co"
+  reminder1['mergeVars'] = mergeVars1
+  
+  reminder1['emailcontent'] = """
+  Hi *|CLIENTNAME|*,
+  
+  It's been about 30 days since your DebtSettle letter was delivered to ${debt_collector_name}.
+  
+  It's time to think about next steps. Have you received a response from ${debt_collector_name}?
+  """
+  juris['reminders'].append(reminder1)
+  
+  reminder2 = {}
+  reminder2['subject'] = '[JURIS] Have you gotten a response yet?'
+  reminder2['template'] = 'juris-response-solicitor-40-day'
+  reminder2['days'] = 70
+  reminder2['mergeVars'] = mergeVars1
+  reminder1['emailcontent'] = """
+  Hi *|CLIENTNAME|*,
+  
+  It's been about 60 days since your DebtSettle letter was delivered to ${debt_collector_name}.
+  
+  It's time to think about next steps. Have you received a response from ${debt_collector_name}?
+  """
+  juris['reminders'].append(reminder2)
+---
+mandatory: True
+progress: 100
+sets: all_done
+question: |
+  Preview your letter
+attachments:
+  - name: DebtSettle Letter
+    filename: debtsettle_letter
+    metadata:
+      SingleSpacing: True
+    content: |
+      ${ letter_text }
