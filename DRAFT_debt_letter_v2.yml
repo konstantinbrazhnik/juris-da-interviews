@@ -279,70 +279,67 @@ id: how_contacted
 question: |
   ## Thanks ${user_firstname}!
   
-  So, how'd you first learn about this alleged debt? 
+  So how were you most recently contacted about this alleged debt? 
 fields:
-  - Choose One: first_contact_method
+  - Choose One: last_contact_method
     required: True
     input type: radio
     choices:
-      - Someone called me saying I owe them money : "Your company contacted me by phone in connection with this debt"
-      - I got a letter saying I owe someone money : "I received your contact by mail in connection with this debt"
-      - I got an email saying I owe someone money : "I received your contact by email in connection with this debt"
+      - Someone called me : "Your company contacted me by phone in connection with this debt"
+      - I got a letter in the mail : "I received your contact by mail in connection with this debt"
+      - I got an email : "I received your contact by email in connection with this debt"
+      - Someone talked to me in person : "A representative of your company contacted me in person in connection with this debt"
       - I noticed the debt on my credit report : "I noticed this debt on my credit report"
-      - Someone contacted me in person saying I owe them money : "Your company contacted me in person in connection with this debt"
 ---
 mandatory: True
 code: |
-  need(first_contact_method)
+  need(last_contact_method)
   
   check_for_date = ""
-  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
-    check_for_date = "Since they first contacted you by phone, you could go through your call history to figure out this date."
-  if(first_contact_method) == "I received your contact by email in connection with this debt":
-    check_for_date = "Since they first contacted you by email, you could go through your email history to figure out this date."
-  if(first_contact_method) == "I received your contact by mail in connection with this debt":
-    check_for_date = "Since they first contacted you by mail, you could check their letter to figure out this date."
-  
+  if(last_contact_method) == "Your company contacted me by phone in connection with this debt":
+    check_for_date = "Since they last contacted you by phone, you could go through your call history to figure out this date."
+  if(last_contact_method) == "I received your contact by email in connection with this debt":
+    check_for_date = "Since they last contacted you by email, you could go through your email history to figure out this date."
+  if(last_contact_method) == "I received your contact by mail in connection with this debt":
+    check_for_date = "Since they last contacted you by mail, you could check their letter to figure out this date."
+
   check_for_address = ""
-  if(first_contact_method) == "I received your contact by email in connection with this debt":
+  if(last_contact_method) == "I received your contact by email in connection with this debt":
     check_for_address = "Check the email that they sent you to see if they included an address."
-  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+  if(last_contact_method) == "I received your contact by mail in connection with this debt":
     check_for_address = "Check the mail that they sent you to get their address."
-  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+  if(last_contact_method) == "Your company contacted me by phone in connection with this debt":
     check_for_address = "If they contacted you by mail at all, look for an address on their letter."
-  if(first_contact_method) == "I noticed this debt on my credit report":
+  if(last_contact_method) == "I noticed this debt on my credit report":
     check_for_address = "Check your credit report to see if it lists a mailing address for the debt collector in the details about the alleged debt."
-  if(first_contact_method) == "Your company contacted me in person in connection with this debt":
+  if(last_contact_method) == "A representative of your company contacted me in person in connection with this debt":
     check_for_address = "If they contacted you by mail at all, look for an address on their letter."
 
   check_for_name = ""
-  if(first_contact_method) == "I received your contact by email in connection with this debt":
+  if(last_contact_method) == "I received your contact by email in connection with this debt":
     check_for_name = "Check the email that they sent you to get the name of their organization."
-  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+  if(last_contact_method) == "I received your contact by mail in connection with this debt":
     check_for_name = "Check the mail that they sent you to get the name of their organization."
-  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+  if(last_contact_method) == "Your company contacted me by phone in connection with this debt":
     check_for_name = "If they contacted you by mail at all, look for the name of their organization on their letter."
-  if(first_contact_method) == "I noticed this debt on my credit report":
+  if(last_contact_method) == "I noticed this debt on my credit report":
     check_for_name = "Check your credit report to see if it lists the name of the debt collector in the details about the alleged debt."
-  if(first_contact_method) == "Your company contacted me in person in connection with this debt":
+  if(last_contact_method) == "A representative of your company contacted me in person in connection with this debt":
     check_for_name = "If they contacted you by mail at all, look for the name of their organization on their letter."
 
   simple_contact_description = ""
   
-  if(first_contact_method) == "I noticed this debt on my credit report":
+  if(last_contact_method) == "I noticed this debt on my credit report":
     simple_contact_description = "that is on your credit report as a debt holder"
-    
-  if(first_contact_method) == "I received your contact by mail in connection with this debt":
+  if(last_contact_method) == "I received your contact by mail in connection with this debt":
     simple_contact_description = "that sent you a letter"
-
-  if(first_contact_method) == "I received your contact by email in connection with this debt":
+  if(last_contact_method) == "I received your contact by email in connection with this debt":
     simple_contact_description = "that sent you an email"
-
-  if(first_contact_method) == "Your company contacted me by phone in connection with this debt":
+  if(last_contact_method) == "Your company contacted me by phone in connection with this debt":
     simple_contact_description = "that called you"
-
-  if(first_contact_method) == "Your company contacted me in person in connection with this debt":
+  if(last_contact_method) == "A representative of your company contacted me in person in connection with this debt":
     simple_contact_description = "that contacted you in person"
+  
 ---
 id: which_bureau_was_it
 question: |
@@ -354,7 +351,7 @@ choices:
   - TransUnion : "This credit report was from TransUnion."
 ---
 mandatory: |
-  first_contact_method == "I noticed this debt on my credit report"
+  last_contact_method == "I noticed this debt on my credit report"
 code: |
   need(which_bureau)
 ---
@@ -417,9 +414,8 @@ id: creditor_end
 question: |
   ## Contact Us
 subquestion: |
-  Unfortunately, it sounds like DebtSettle can't help you right now. It isn't 
-  built for situations involving the original creditor, only debt collectors. But 
-  our team might be able to help.
+  Unfortunately, it sounds like DebtSettle can't help you right now but 
+  our team might be able to help in some other way.
   
   Contact us by using the chat system in the bottom 
   right corner of this screen, by calling us toll free at 1-888-880-8095, or by emailing the team at [team@getjuris.com](mailto:team@getjuris.com), 
@@ -881,9 +877,9 @@ code: |
 ---
 id: know_first_contact_screen
 question: |
-  ## Do you know when ${debt_collector_name} first contacted you?
+  ## Do you know the date that ${debt_collector_name} last contacted you?
 subquestion: |
-  This can just be your best guess but the exact day would be better. ${check_for_date}
+  ${check_for_date}
 field: know_first_contact
 buttons:
   - Yes
@@ -895,20 +891,20 @@ code: |
 ---
 id: first_contact
 question: |
-  ## When did ${debt_collector_name} first contact you?
+  ## When did ${debt_collector_name} last contact you?
 fields:
-  - "Date of contact" : first_contact_date
+  - "Date of contact" : last_contact_date
     datatype: date
     required: True
 ---
 mandatory: |
   know_first_contact == "Yes"
 code: |
-  need(first_contact_date)
+  need(last_contact_date)
 ---
 id: know_original_lender_screen
 question: |
-  ## Last question! Did ${debt_collector_name} tell you who they think you originally owed this money to?
+  ## Did ${debt_collector_name} tell you who they think you originally owed this money to?
 field: know_original_lender
 buttons:
   - Yes
@@ -932,7 +928,7 @@ code: |
 ---
 id: know_original_account_screen
 question: |
-  ## Did ${debt_collector_name} give you an account number to identify this debt?
+  ## Last question! Did ${debt_collector_name} give you an account number to identify this debt?
 field: have_account_number
 buttons:
   - Yes
@@ -972,9 +968,9 @@ code: |
   if (defined('account_number') and value('account_number') != ""):
     regarding_final_text += ", Account Number: %s" % (account_number)
 
-  when_contacted_text = "I am responding to your contact about a debt you are trying to collect. %s." % (first_contact_method)
-  if (defined('first_contact_date') and value('first_contact_date') != ""):
-    when_contacted_text += " This occured on %s." %(first_contact_date)
+  when_contacted_text = "I am responding to your contact about a debt you are trying to collect. %s." % (last_contact_method)
+  if (defined('last_contact_date') and value('last_contact_date') != ""):
+    when_contacted_text += " This occured on %s." %(last_contact_date)
   if (defined('which_bureau') and value('which_bureau') != ""):
     when_contacted_text += " %s" % (which_bureau)
 ---
